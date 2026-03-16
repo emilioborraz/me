@@ -30,7 +30,7 @@ load_dotenv()
 
 ACCESS_KEY   = os.getenv("UNSPLASH_ACCESS_KEY")
 USERNAME     = os.getenv("UNSPLASH_USERNAME")
-TARGET_COUNT = 36
+TARGET_COUNT = 60
 MAX_PER_PAGE = 30   # Unsplash API hard limit
 
 HTML_PATH    = Path(__file__).parent / "docs" / "index.html"
@@ -56,7 +56,7 @@ def fetch_user_photos(username: str, count: int) -> list[dict]:
         resp = requests.get(
             f"{API_BASE}/users/{username}/photos",
             headers=headers,
-            params={"order_by": "popular", "per_page": per_page, "page": page},
+            params={"order_by": "views", "per_page": per_page, "page": page},
             timeout=15,
         )
 
