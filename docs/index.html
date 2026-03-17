@@ -273,7 +273,7 @@
 
 <div class="page-title">
   <h1>Adventure</h1>
-  <span>36 photographs</span>
+  <span>moments</span>
 </div>
 
 <div id="gallery"></div>
@@ -491,9 +491,12 @@ function updateLightbox(fade = true) {
   if (fade) {
     lbImg.classList.add('fading');
     setTimeout(() => {
+      lbImg.onload = () => {
+        lbImg.classList.remove('fading');
+        lbImg.onload = null;
+      };
       lbImg.src = fullUrl(photo);
       lbImg.alt = photo.title;
-      lbImg.classList.remove('fading');
     }, 180);
   } else {
     lbImg.src = fullUrl(photo);
