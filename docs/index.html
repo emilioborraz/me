@@ -299,7 +299,7 @@
   <a class="site-name" href="#">Borraz Photography</a>
   <nav>
     <a href="#" class="active">Adventure</a>
-    <a href="#">Contact</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </header>
 
@@ -503,10 +503,11 @@ function renderGallery() {
 }
 
 // ─── Lightbox ──────────────────────────────────────────────────────────────────
-const lightbox  = document.getElementById('lightbox');
-const lbImg     = document.getElementById('lb-img');
-const lbTitle   = document.getElementById('lb-title');
-const lbCounter = document.getElementById('lb-counter');
+const lightbox   = document.getElementById('lightbox');
+const lbImg      = document.getElementById('lb-img');
+const lbTitle    = document.getElementById('lb-title');
+const lbCounter  = document.getElementById('lb-counter');
+const lbInquire  = document.getElementById('lb-inquire');
 let   currentIdx = 0;
 
 function openLightbox(index) {
@@ -539,6 +540,7 @@ function updateLightbox(fade = true) {
   }
   lbTitle.textContent   = photo.title;
   lbCounter.textContent = `${currentIdx + 1} / ${photos.length}`;
+  lbInquire.href        = `contact.html?photo=${encodeURIComponent(photo.title)}`;
 }
 
 function prevPhoto() {

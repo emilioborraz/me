@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <title>Contact — Photography</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #1a1a1a;
+      --text: #050505;
+      --text-muted: #888;
+      --gap: 12px;
+      --header-h: 60px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ───────────────────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 100;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .site-name {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+    nav {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+    nav a {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    nav a:hover, nav a.active { color: var(--text); }
+
+    /* ── Page Title ───────────────────────────────────────── */
+    .page-title {
+      padding: calc(var(--header-h) + 48px) 40px 28px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .page-title h1 {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .page-title span {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── Contact Form ─────────────────────────────────────── */
+    .contact-wrap {
+      max-width: 560px;
+      padding: 0 40px 80px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .form-field label {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .form-field label .optional {
+      margin-left: 6px;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: #bbb;
+    }
+
+    .form-field input,
+    .form-field textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #d8d8d8;
+      outline: none;
+      padding: 8px 0;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text);
+      width: 100%;
+      border-radius: 0;
+      transition: border-color 0.2s ease;
+      -webkit-appearance: none;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      border-bottom-color: var(--text);
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: #ccc;
+    }
+
+    .form-field textarea {
+      resize: none;
+      min-height: 120px;
+      line-height: 1.7;
+    }
+
+    .form-submit {
+      margin-top: 8px;
+    }
+
+    #submit-btn {
+      background: var(--text);
+      color: #fff;
+      border: none;
+      padding: 12px 36px;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 0;
+      transition: opacity 0.2s ease;
+    }
+    #submit-btn:hover { opacity: 0.72; }
+    #submit-btn:active { opacity: 0.55; }
+
+    #form-note {
+      margin-top: 16px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      padding: 52px 40px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p, footer a {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--text); transition: color 0.2s; }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 768px) {
+      header { padding: 0 20px; }
+      nav { gap: 24px; }
+      .page-title { padding-left: 20px; padding-right: 20px; }
+      .contact-wrap { padding-left: 20px; padding-right: 20px; }
+      footer { padding: 40px 20px; flex-direction: column; gap: 12px; }
+    }
+    @media (max-width: 480px) {
+      nav a:not(.active) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header id="header">
+  <a class="site-name" href="index.html">Borraz Photography</a>
+  <nav>
+    <a href="index.html">Adventure</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+</header>
+
+<div class="page-title">
+  <h1>Contact</h1>
+  <span>get in touch</span>
+</div>
+
+<div class="contact-wrap">
+  <form id="contact-form" novalidate>
+
+    <div class="form-field">
+      <label for="f-name">Name</label>
+      <input id="f-name" type="text" placeholder="Your name" autocomplete="name" required>
+    </div>
+
+    <div class="form-field">
+      <label for="f-email">Email</label>
+      <input id="f-email" type="email" placeholder="your@email.com" autocomplete="email" required>
+    </div>
+
+    <div class="form-field">
+      <label for="f-photo">Photo inquiry <span class="optional">optional</span></label>
+      <input id="f-photo" type="text" placeholder="e.g. Photo #12 — Denali">
+    </div>
+
+    <div class="form-field">
+      <label for="f-message">Message</label>
+      <textarea id="f-message" placeholder="Tell me about your inquiry…" required></textarea>
+    </div>
+
+    <div class="form-submit">
+      <button type="submit" id="submit-btn">Send message</button>
+      <p id="form-note">Please fill in all required fields.</p>
+    </div>
+
+  </form>
+</div>
+
+<footer>
+  <p>&copy; 2026 Emilio Borraz Ortega</p>
+  <a target="blank" href="https://www.instagram.com/emilio.lens/">Instagram</a>
+</footer>
+
+<script>
+// ─── Sticky header ─────────────────────────────────────────────────────────────
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+// ─── Pre-fill photo field from URL param ───────────────────────────────────────
+(function () {
+  const p = new URLSearchParams(window.location.search).get('photo');
+  if (p) document.getElementById('f-photo').value = decodeURIComponent(p);
+})();
+
+// ─── Form submission via JS-assembled mailto ───────────────────────────────────
+document.getElementById('contact-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const name    = document.getElementById('f-name').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const photo   = document.getElementById('f-photo').value.trim();
+  const message = document.getElementById('f-message').value.trim();
+  const note    = document.getElementById('form-note');
+
+  if (!name || !email || !message) {
+    note.style.display = 'block';
+    return;
+  }
+  note.style.display = 'none';
+
+  // Recipient assembled at click time — never a static string in the source.
+  const _u = [101,109,105,108,105,111,98,111,114,114,97,122,43,109,101,112,97,103,101].map(c => String.fromCharCode(c)).join('');
+  const _d = [103,109,97,105,108].map(c => String.fromCharCode(c)).join('');
+  const _t = [99,111,109].map(c => String.fromCharCode(c)).join('');
+  const to  = _u + String.fromCharCode(64) + _d + String.fromCharCode(46) + _t;
+
+  const subject = photo
+    ? `Photo inquiry — ${photo}`
+    : 'Photography inquiry';
+
+  const body = [
+    `Name: ${name}`,
+    `Email: ${email}`,
+    photo ? `Photo: ${photo}` : null,
+    '',
+    message,
+  ].filter(l => l !== null).join('\n');
+
+  window.location.href = 'mailto:' + to
+    + '?subject=' + encodeURIComponent(subject)
+    + '&body='    + encodeURIComponent(body);
+});
+</script>
+
+</body>
+</html>
