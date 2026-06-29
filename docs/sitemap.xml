@@ -6,6 +6,11 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://emilioborraz.github.io/me/services.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://emilioborraz.github.io/me/contact.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
