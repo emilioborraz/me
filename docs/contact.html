@@ -32,7 +32,8 @@
       --bg: #ffffff;
       --surface: #1a1a1a;
       --text: #050505;
-      --text-muted: #888;
+      --text-muted: #202938;
+      --nav-text-muted: #888;
       --gap: 12px;
       --header-h: 60px;
     }
@@ -82,7 +83,7 @@
       font-weight: 400;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--nav-text-muted);
       text-decoration: none;
       transition: color 0.2s ease;
     }
@@ -235,6 +236,7 @@
   <a class="site-name" href="index.html">Borraz Photography</a>
   <nav>
     <a href="index.html">Adventure</a>
+    <a href="services.html">Services</a>
     <a href="contact.html" class="active">Contact</a>
   </nav>
 </header>
@@ -287,10 +289,16 @@ window.addEventListener('scroll', () => {
   header.classList.toggle('scrolled', window.scrollY > 10);
 }, { passive: true });
 
-// ─── Pre-fill photo field from URL param ───────────────────────────────────────
+// ─── Pre-fill fields from URL params ───────────────────────────────────────────
+const _params     = new URLSearchParams(window.location.search);
+const _isService  = !!_params.get('service');
 (function () {
-  const p = new URLSearchParams(window.location.search).get('photo');
-  if (p) document.getElementById('f-photo').value = decodeURIComponent(p);
+  const photo   = _params.get('photo');
+  const service = _params.get('service');
+  const msg     = _params.get('msg');
+  if (photo)   document.getElementById('f-photo').value   = decodeURIComponent(photo);
+  if (service) document.getElementById('f-photo').value   = decodeURIComponent(service);
+  if (msg)     document.getElementById('f-message').value = decodeURIComponent(msg);
 })();
 
 // ─── Form submission via JS-assembled mailto ───────────────────────────────────
@@ -316,7 +324,7 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
   const to  = _u + String.fromCharCode(64) + _d + String.fromCharCode(46) + _t;
 
   const subject = photo
-    ? `Photo inquiry — ${photo}`
+    ? (_isService ? `Service inquiry — ${photo}` : `Photo inquiry — ${photo}`)
     : 'Photography inquiry';
 
   const body = [

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+  <title>Services — Borraz Photography</title>
+  <meta name="description" content="Photography services by Emilio Borraz — prints, licensing, adventure sessions, and more.">
+  <meta name="author" content="Emilio Borraz Ortega">
+  <link rel="canonical" href="https://emilioborraz.github.io/me/services.html">
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Borraz Photography">
+  <meta property="og:title"       content="Services — Borraz Photography">
+  <meta property="og:description" content="Photography services by Emilio Borraz — prints, licensing, adventure sessions, and more.">
+  <meta property="og:url"         content="https://emilioborraz.github.io/me/services.html">
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="Services — Borraz Photography">
+  <meta name="twitter:description" content="Photography services by Emilio Borraz — prints, licensing, adventure sessions, and more.">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Services — Borraz Photography",
+    "url": "https://emilioborraz.github.io/me/services.html",
+    "provider": {
+      "@type": "Person",
+      "name": "Emilio Borraz Ortega",
+      "sameAs": "https://www.instagram.com/emilio.lens/"
+    }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #1a1a1a;
+      --text: #050505;
+      --text-muted: #202938;
+      --nav-text-muted: #888;
+      --gap: 12px;
+      --header-h: 60px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ───────────────────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 100;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .site-name {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+    nav {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+    nav a {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--nav-text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    nav a:hover, nav a.active { color: var(--text); }
+
+    /* ── Page Title ───────────────────────────────────────── */
+    .page-title {
+      padding: calc(var(--header-h) + 48px) 40px 28px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .page-title h1 {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .page-title span {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── Gallery ──────────────────────────────────────────── */
+    #gallery {
+      padding: 0 var(--gap) var(--gap);
+    }
+    .gallery-row {
+      display: flex;
+      gap: var(--gap);
+      margin-bottom: var(--gap);
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .gallery-item img.loaded { opacity: 1; }
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.65) 0%,
+        rgba(0, 0, 0, 0.08) 45%,
+        transparent 65%
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+    .gallery-item-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 14px 16px;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none;
+    }
+    .gallery-item:hover .gallery-item-caption {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .gallery-item-caption p {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: lowercase;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    /* ── Services Content ─────────────────────────────────── */
+    .services-content {
+      padding: 56px 40px 80px;
+      max-width: 860px;
+    }
+
+    .services-content h2 {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .services-content p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      max-width: 620px;
+    }
+    .services-content p:last-of-type {
+      margin-bottom: 48px;
+    }
+
+    /* ── Services Table ───────────────────────────────────── */
+    .services-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .services-table thead tr {
+      border-bottom: 1px solid rgba(5, 5, 5, 0.1);
+    }
+    .services-table th {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: left;
+      padding: 0 0 14px;
+    }
+    .services-table th + th { padding-left: 32px; }
+    .services-table tbody tr {
+      border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+    }
+    .services-table td {
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      padding: 18px 0;
+      vertical-align: middle;
+    }
+    .services-table td + td { padding-left: 32px; }
+    .services-table td.service-name {
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .services-table td.service-desc {
+      color: var(--text-muted);
+      line-height: 1.6;
+      width: 100%;
+    }
+    .services-table td.service-action {
+      white-space: nowrap;
+    }
+    .service-inquire {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border: 1px solid rgba(5, 5, 5, 0.18);
+      border-radius: 2px;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+      white-space: nowrap;
+    }
+    .service-inquire:hover {
+      border-color: var(--text);
+      color: var(--text);
+      background: rgba(5, 5, 5, 0.04);
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      padding: 52px 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p, footer a {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    footer a:hover { color: var(--text); transition: color 0.2s; }
+
+    /* ── Lightbox ─────────────────────────────────────────── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      padding: 56px 80px 40px;
+    }
+    #lightbox.open { display: flex; }
+
+    #lb-img {
+      max-width: calc(100vw - 160px);
+      max-height: calc(100vh - 220px);
+      object-fit: contain;
+      display: block;
+      flex-shrink: 0;
+      transition: opacity 0.18s ease;
+    }
+    #lb-img.fading { opacity: 0; }
+
+    .lb-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      padding: 20px 16px;
+      transition: color 0.2s ease;
+      line-height: 0;
+    }
+    .lb-btn:hover { color: rgba(255, 255, 255, 0.9); }
+    #lb-prev { left: 8px; }
+    #lb-next { right: 8px; }
+    .lb-btn svg { width: 30px; height: 30px; display: block; }
+
+    #lb-close {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      padding: 8px;
+      transition: color 0.2s ease;
+      line-height: 0;
+    }
+    #lb-close:hover { color: rgba(255, 255, 255, 0.9); }
+    #lb-close svg { width: 20px; height: 20px; display: block; }
+
+    #lb-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .lb-meta { text-align: center; white-space: nowrap; }
+    #lb-title {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: lowercase;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 5px;
+    }
+    #lb-counter {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: rgba(255, 255, 255, 0.28);
+    }
+
+    #lb-inquire {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 22px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.75);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+    }
+    #lb-inquire:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.55);
+      color: #fff;
+    }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 768px) {
+      :root { --gap: 6px; }
+      header { padding: 0 20px; }
+      nav { gap: 24px; }
+      .page-title { padding-left: 20px; padding-right: 20px; }
+      .services-content { padding: 40px 20px 60px; }
+      footer { padding: 40px 20px; flex-direction: column; gap: 12px; }
+      .services-table td.service-desc { display: none; }
+      .service-inquire { padding: 7px 10px; }
+      #lb-img { max-width: calc(100vw - 80px); }
+      .lb-btn { padding: 12px 8px; }
+      #lb-prev { left: 0; }
+      #lb-next { right: 0; }
+    }
+    @media (max-width: 480px) {
+      nav a:not(.active) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header id="header">
+  <a class="site-name" href="index.html">Borraz Photography</a>
+  <nav>
+    <a href="index.html">Adventure</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<div class="page-title">
+  <h1>Services</h1>
+  <span></span>
+</div>
+
+<div id="gallery"></div>
+
+<div class="services-content">
+  <h2>What I Offer</h2>
+  <p>I'm a seasoned photographer that finds inspiration in every corner of this world, paying close attention to detail and patterns that make photos armonic. Do you love one of my photographs? They all are available for printing and optionally framing.</p>
+  <p>I'm passionate on sharing my knowledge and take your adventure to the next level. Either capturing moments lived by you or scheduling a photography workshop in the field. Interested in traveling and capturing moments through the lens? Hit me up</p>
+
+  <table class="services-table">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="service-name">Fine Art Prints</td>
+        <td class="service-desc">Museum-quality giclée prints on archival paper or aluminum, available in multiple sizes. Each print is signed and numbered.</td>
+        <td class="service-action"><a class="service-inquire" href="contact.html?service=Fine%20Art%20Prints&msg=Hi%2C%20I%27m%20interested%20in%20ordering%20a%20fine%20art%20print.%20Could%20you%20share%20more%20details%20about%20available%20sizes%2C%20materials%2C%20and%20pricing%3F">✉&#xFE0E;&ensp;Inquire</a></td>
+      </tr>
+      <tr>
+        <td class="service-name">Photo Licensing</td>
+        <td class="service-desc">Commercial and editorial licensing of existing images for publications, advertising, and digital media. Usage-based pricing available.</td>
+        <td class="service-action"><a class="service-inquire" href="contact.html?service=Photo%20Licensing&msg=Hi%2C%20I%27m%20interested%20in%20licensing%20one%20of%20your%20photographs.%20Could%20you%20share%20more%20details%20about%20usage%20rights%20and%20pricing%3F">✉&#xFE0E;&ensp;Inquire</a></td>
+      </tr>
+      <tr>
+        <td class="service-name">Adventure Sessions</td>
+        <td class="service-desc">On-location photography for outdoor events, expeditions, brand campaigns, or personal adventures. Travel to remote locations considered.</td>
+        <td class="service-action"><a class="service-inquire" href="contact.html?service=Adventure%20Sessions&msg=Hi%2C%20I%27m%20interested%20in%20booking%20an%20adventure%20photography%20session.%20Could%20you%20share%20more%20details%20about%20availability%20and%20how%20it%20works%3F">✉&#xFE0E;&ensp;Inquire</a></td>
+      </tr>
+      <tr>
+        <td class="service-name">Workshop</td>
+        <td class="service-desc">Small-group outdoor photography workshops covering composition, light reading, and post-processing. Beginner and intermediate levels.</td>
+        <td class="service-action"><a class="service-inquire" href="contact.html?service=Photography%20Workshop&msg=Hi%2C%20I%27m%20interested%20in%20attending%20one%20of%20your%20photography%20workshops.%20Could%20you%20share%20more%20details%20about%20upcoming%20dates%20and%20skill%20levels%3F">✉&#xFE0E;&ensp;Inquire</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <p>&copy; 2026 Emilio Borraz Ortega</p>
+  <a target="blank" href="https://www.instagram.com/emilio.lens/">Instagram</a>
+</footer>
+
+<!-- Lightbox -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button id="lb-close" aria-label="Close lightbox">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M18 6 6 18M6 6l12 12"/>
+    </svg>
+  </button>
+  <button class="lb-btn" id="lb-prev" aria-label="Previous photo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-btn" id="lb-next" aria-label="Next photo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18l6-6-6-6"/>
+    </svg>
+  </button>
+  <div id="lb-bottom">
+    <div class="lb-meta">
+      <div id="lb-title"></div>
+      <div id="lb-counter"></div>
+    </div>
+    <a id="lb-inquire" href="#" aria-label="Inquire about this photo">✉&#xFE0E;&ensp;Inquire</a>
+  </div>
+</div>
+
+<script>
+// ─── Photo data (single row selection) ─────────────────────────────────────────
+const photos = [
+  { title: "Fall at Arkansas, Smith Creek. Autom.",         w:  5568, h:  3712, regular: "https://images.unsplash.com/photo-1573351981405-e86511208f01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHwyfHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=80&w=1080", full:    "https://images.unsplash.com/photo-1573351981405-e86511208f01?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHwyfHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=85" },
+  { title: "A quick and beautiful hike at Cuyamaca",        w:  5568, h:  3712, regular: "https://images.unsplash.com/photo-1624343756785-00d2067e4ba7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHwzfHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=80&w=1080", full:    "https://images.unsplash.com/photo-1624343756785-00d2067e4ba7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHwzfHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=85" },
+  { title: "Grizzly bears gaping at Katmai National Park",  w:  4127, h:  2751, regular: "https://images.unsplash.com/photo-1724775193088-1dde9ceea5a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHw1fHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=80&w=1080", full:    "https://images.unsplash.com/photo-1724775193088-1dde9ceea5a8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHw1fHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=85" },
+  { title: "Grizzly bear swimming at Katmai National Park", w:  2848, h:  1899, regular: "https://images.unsplash.com/photo-1724775422381-55d91786f805?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHw2fHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=80&w=1080", full:    "https://images.unsplash.com/photo-1724775422381-55d91786f805?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHw2fHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=85" },
+  { title: "Sunrise at Garnet Peak",                        w:  5299, h:  3533, regular: "https://images.unsplash.com/photo-1643492725391-e00812bff332?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHw3fHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=80&w=1080", full:    "https://images.unsplash.com/photo-1643492725391-e00812bff332?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4OTM2MDN8MHwxfGFsbHw3fHx8fHx8fHwxNzgyNjc4MzUxfA&ixlib=rb-4.1.0&q=85" }
+];
+
+// ─── Build a single justified row ──────────────────────────────────────────────
+function renderGallery() {
+  const gallery    = document.getElementById('gallery');
+  const GAP        = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--gap')) || 12;
+  const containerW = gallery.clientWidth - GAP * 2;
+  const targetH    = window.innerWidth < 600 ? 160 : 300;
+
+  const totalAR  = photos.reduce((sum, p) => sum + p.w / p.h, 0);
+  const gapTotal = (photos.length - 1) * GAP;
+  const rowH     = Math.min(Math.round((containerW - gapTotal) / totalAR), targetH);
+
+  gallery.innerHTML = '';
+  const rowEl = document.createElement('div');
+  rowEl.className    = 'gallery-row';
+  rowEl.style.height = rowH + 'px';
+
+  photos.forEach((photo, i) => {
+    const ar    = photo.w / photo.h;
+    const itemW = Math.round(ar * rowH);
+    const dpr   = Math.min(window.devicePixelRatio || 1, 2);
+    const srcW  = Math.min(Math.round(itemW * dpr), 1080);
+    const src   = photo.regular.replace(/&w=\d+/, `&w=${srcW}`);
+
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.style.width = itemW + 'px';
+
+    const img = document.createElement('img');
+    img.alt   = photo.title;
+    img.src   = src;
+    img.onload = () => img.classList.add('loaded');
+
+    const overlay = document.createElement('div');
+    overlay.className = 'gallery-item-overlay';
+
+    const caption = document.createElement('div');
+    caption.className = 'gallery-item-caption';
+    caption.innerHTML = `<p>${photo.title}</p>`;
+
+    item.append(img, overlay, caption);
+    item.addEventListener('click', () => openLightbox(i));
+    rowEl.appendChild(item);
+  });
+
+  gallery.appendChild(rowEl);
+}
+
+// ─── Lightbox ──────────────────────────────────────────────────────────────────
+const lightbox  = document.getElementById('lightbox');
+const lbImg     = document.getElementById('lb-img');
+const lbTitle   = document.getElementById('lb-title');
+const lbCounter = document.getElementById('lb-counter');
+const lbInquire = document.getElementById('lb-inquire');
+let currentIdx  = 0;
+
+function openLightbox(index) {
+  currentIdx = index;
+  updateLightbox(false);
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function updateLightbox(fade = true) {
+  const photo = photos[currentIdx];
+  if (fade) {
+    lbImg.classList.add('fading');
+    setTimeout(() => {
+      lbImg.onload = () => { lbImg.classList.remove('fading'); lbImg.onload = null; };
+      lbImg.src = photo.full;
+      lbImg.alt = photo.title;
+    }, 180);
+  } else {
+    lbImg.src = photo.full;
+    lbImg.alt = photo.title;
+  }
+  lbTitle.textContent   = photo.title;
+  lbCounter.textContent = `${currentIdx + 1} / ${photos.length}`;
+  lbInquire.href        = `contact.html?photo=${encodeURIComponent(photo.title)}`;
+}
+
+function prevPhoto() { currentIdx = (currentIdx - 1 + photos.length) % photos.length; updateLightbox(); }
+function nextPhoto() { currentIdx = (currentIdx + 1) % photos.length; updateLightbox(); }
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.getElementById('lb-prev').addEventListener('click', prevPhoto);
+document.getElementById('lb-next').addEventListener('click', nextPhoto);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'ArrowLeft')  prevPhoto();
+  if (e.key === 'ArrowRight') nextPhoto();
+  if (e.key === 'Escape')     closeLightbox();
+});
+
+let touchStartX = 0;
+lightbox.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+lightbox.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) dx < 0 ? nextPhoto() : prevPhoto();
+}, { passive: true });
+
+// ─── Header scroll effect ───────────────────────────────────────────────────────
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+// ─── Init & responsive re-render ───────────────────────────────────────────────
+renderGallery();
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(renderGallery, 120);
+});
+</script>
+
+</body>
+</html>

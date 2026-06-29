@@ -2,8 +2,9 @@
 """
 fetch_photos.py
 
-Fetches your 36 most popular Unsplash photos and updates docs/index.html
-with the real photo data (dimensions + URLs).
+Fetches your most popular Unsplash photos and updates:
+  - docs/index.html   — full gallery (TARGET_COUNT photos)
+  - docs/services.html — single hero row (SERVICES_COUNT landscape photos)
 
 Requirements:
     pip install requests python-dotenv
@@ -33,8 +34,10 @@ USERNAME     = os.getenv("UNSPLASH_USERNAME")
 TARGET_COUNT = 60
 MAX_PER_PAGE = 30   # Unsplash API hard limit
 
-HTML_PATH    = Path(__file__).parent / "docs" / "index.html"
-API_BASE     = "https://api.unsplash.com"
+HTML_PATH          = Path(__file__).parent / "docs" / "index.html"
+SERVICES_HTML_PATH = Path(__file__).parent / "docs" / "services.html"
+SERVICES_COUNT     = 5   # number of photos for the services single row
+API_BASE           = "https://api.unsplash.com"
 
 # ── Validation ─────────────────────────────────────────────────────────────────
 if not ACCESS_KEY:
@@ -43,6 +46,8 @@ if not USERNAME:
     sys.exit("Error: UNSPLASH_USERNAME is not set in .env")
 if not HTML_PATH.exists():
     sys.exit(f"Error: {HTML_PATH} not found")
+if not SERVICES_HTML_PATH.exists():
+    sys.exit(f"Error: {SERVICES_HTML_PATH} not found")
 
 # ── Fetch ──────────────────────────────────────────────────────────────────────
 def fetch_user_photos(username: str, count: int) -> list[dict]:
@@ -106,14 +111,18 @@ def build_js_array(photos: list[dict]) -> str:
     return "[\n" + ",\n".join(entries) + "\n]"
 
 # ── Patch HTML ─────────────────────────────────────────────────────────────────
-def patch_html(html: str, js_array: str) -> str:
-    """Replace the `const photos = [...]` block."""
+def patch_html(html: str, js_array: str, label: str) -> str:
+    """Replace the `const photos = [...]` block in the given html string."""
     pattern     = r'(const photos = )\[.*?\];'
     replacement = r'\g<1>' + js_array.replace("\\", "\\\\") + ";"
     result, n   = re.subn(pattern, replacement, html, count=1, flags=re.DOTALL)
     if n == 0:
-        sys.exit("Error: could not find `const photos = [...]` in index.html")
+        sys.exit(f"Error: could not find `const photos = [...]` in {label}")
     return result
+
+def landscape_photos(photos: list[dict], count: int) -> list[dict]:
+    """Return the first `count` landscape-oriented photos (width > height)."""
+    return [p for p in photos if p["width"] > p["height"]][:count]
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 def main():
@@ -121,13 +130,22 @@ def main():
     raw = fetch_user_photos(USERNAME, TARGET_COUNT)
     print(f"  Retrieved {len(raw)} photo(s).")
 
+    # Update index.html — full gallery
     js_array = build_js_array(raw)
     html     = HTML_PATH.read_text(encoding="utf-8")
-    html     = patch_html(html, js_array)
+    html     = patch_html(html, js_array, "index.html")
     HTML_PATH.write_text(html, encoding="utf-8")
-
     print(f"  Wrote {HTML_PATH}")
-    print("Done. Open docs/index.html in a browser to preview.")
+
+    # Update services.html — single row of landscape photos
+    svc_photos   = landscape_photos(raw, SERVICES_COUNT)
+    svc_js_array = build_js_array(svc_photos)
+    svc_html     = SERVICES_HTML_PATH.read_text(encoding="utf-8")
+    svc_html     = patch_html(svc_html, svc_js_array, "services.html")
+    SERVICES_HTML_PATH.write_text(svc_html, encoding="utf-8")
+    print(f"  Wrote {SERVICES_HTML_PATH} ({len(svc_photos)} landscape photo(s))")
+
+    print("Done.")
 
 if __name__ == "__main__":
     main()
